@@ -13,9 +13,9 @@ pub struct HealthcheckResponse {
 }
 
 pub fn healthcheck(client: &Client) -> Result<HealthcheckResponse, Box<dyn std::error::Error>> {
-    let url = client.apps_healthcheck_url();
-    let resp = reqwest::blocking::get(&url)?;
-    let text = resp.text()?;
-    let body: HealthcheckResponse = serde_json::from_str(&text)?;
-    Ok(body)
+    let url = client.apps_healthcheck_url(); // builds the url using client.rs
+    let resp = reqwest::blocking::get(&url)?.error_for_status()?; // makes the request to Tapis and checks for http errors
+    let text = resp.text()?; // takes the JSON response from Tapis and turns it into a string
+    let body: HealthcheckResponse = serde_json::from_str(&text)?; // takes the string and deserializes it into a HealthcheckResponse struct
+    Ok(body) // returns the HealthcheckResponse struct
 }
