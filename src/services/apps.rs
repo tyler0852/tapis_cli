@@ -5,11 +5,11 @@ use serde::Deserialize;
 pub struct HealthcheckResponse {
     pub status: String,
     pub message: String,
-    pub result: String,
     // pub version: String,
     // pub commit: String,
     // pub build: String,
-    // pub metadata: Option<serde_json::Value>,
+    pub result: String,
+    // pub metadata: ??
 }
 
 pub fn healthcheck(client: &Client) -> Result<HealthcheckResponse, Box<dyn std::error::Error>> {
