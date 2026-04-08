@@ -3,6 +3,7 @@ use clap::{Parser, Subcommand};
 
 // Modules
 mod client;
+mod device_code;
 mod services {
     pub mod apps;
     pub mod auth;
@@ -11,16 +12,15 @@ mod services {
 // Defines the Cli struct
 #[derive(Parser, Debug)]
 struct Cli {
-    #[arg(long, default_value = "https://dev.tapis.io")] // Sets a base url to use if the user doesn't define one
+    #[arg(long, default_value = "https://tacc.tapis.io")] // Sets a base url to use if the user doesn't define one
     base_url: String,
 
     #[command(subcommand)] // tells clap to expect a subcommand after the global options
-    service: Services,
+    command: Commands,
 }
 
-// Defines the services the user can use after the global options
 #[derive(Subcommand, Debug)]
-enum Services {
+enum Commands {
     Apps {
         #[command(subcommand)]
         command: AppsCommands,
@@ -29,6 +29,7 @@ enum Services {
         #[command(subcommand)]
         command: AuthCommands,
     },
+    GetToken,
 }
 
 // Defines the operationId subcommands for the apps service
@@ -79,9 +80,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = Cli::parse(); // Clap reads the command line arguments, validates them, then contructs a Cli
     let client = client::Client::new(cli.base_url);
 
-    // Matches the service and operationId the user used and calls the appropriate function
-    match cli.service {
-        Services::Apps { command } => match command {
+    // Matches the command the user used and calls the appropriate function
+    match cli.command {
+        Commands::Apps { command } => match command {
             AppsCommands::Healthcheck => {
                 let body = services::apps::healthcheck(&client)?;
                 println!("status: {}", body.status);
@@ -90,7 +91,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         },
 
-        Services::Auth { command } => match command {
+        Commands::Auth { command } => match command {
             AuthCommands::Hello => {
                 let body = services::auth::hello(&client)?;
                 println!("status: {}", body.status);
@@ -146,6 +147,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 println!("jti: {}", body.result.access_token.jti);
             }
         },
+
+        Commands::GetToken => {
+            device_code::get_token_flow(&client)?;
+        }
     }
 
     Ok(())

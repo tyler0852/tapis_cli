@@ -13,8 +13,8 @@ But I also have a section that has structs defined exactly how they are in the O
 #[derive(Debug, Deserialize)]
 pub struct AuthHelloResponse {
     pub message: String,
-    pub metadata: serde_json::Value,
-    pub result: String,
+    //pub metadata: serde_json::Value,
+    //pub result: String,
     pub status: String,
     pub version: String,
 }
@@ -26,10 +26,10 @@ pub struct AuthHelloResponse {
 #[derive(Debug, Deserialize)]
 pub struct GenerateDeviceCodeResponse {
     pub message: String,
-    pub metadata: serde_json::Value,
+    //pub metadata: serde_json::Value,
     pub result: DeviceCodeResponse,
     pub status: String,
-    pub version: String,
+    //pub version: String,
 }
 
 ///////////////////////////
@@ -39,17 +39,17 @@ pub struct GenerateDeviceCodeResponse {
 #[derive(Debug, Deserialize)]
 pub struct GenerateTokensResponse {
     pub message: String,
-    pub metadata: serde_json::Value,
+    //pub metadata: serde_json::Value,
     pub result: TokenResponse,
     pub status: String,
-    pub version: String,
+    //pub version: String,
 }
 
 ////////////////////
 ///// Schemas //////
 ////////////////////
 
-
+/*
 #[derive(Debug, Deserialize)]
 pub struct BasicResponse {
     pub version: Option<String>,
@@ -57,6 +57,7 @@ pub struct BasicResponse {
     pub status: Option<String>,
     pub metadata: Option<serde_json::Value>,
 }
+*/
 
 // The post body request (comes straigh from NewDeviceCode schema)
 #[derive(Debug, Serialize)]
@@ -107,6 +108,7 @@ pub struct AccessToken {
     pub jti: String,
 }
 
+/*
 // Part of the TokenResponce body
 #[derive(Debug, Deserialize)]
 pub struct RefreshToken {
@@ -115,12 +117,13 @@ pub struct RefreshToken {
     pub expires_in: i32,
     pub jti: String,
 }
+*/
 
 // The response body for the tokens endpoint (comes straight from TokenResponse schema)
 #[derive(Debug, Deserialize)]
 pub struct TokenResponse {
     pub access_token: AccessToken,
-    pub refresh_token: Option<RefreshToken>,
+    //pub refresh_token: Option<RefreshToken>,
 }
 
 ///////////////////////////////////////
